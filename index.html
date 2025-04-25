@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Les Potos Foot</title>
+  <style>
+    body {
+      background: #0a2540;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header img {
+      width: 120px;
+      border-radius: 50%;
+    }
+    h1 {
+      color: #facc15;
+      margin-top: 10px;
+    }
+    .tabs, .subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .tabs button, .subtabs button {
+      background-color: #1e40af;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .tabs button:hover, .subtabs button:hover {
+      background-color: #2563eb;
+    }
+    .tab-content, .subtab-content {
+      display: none;
+    }
+    .tab-content.active, .subtab-content.active {
+      display: block;
+    }
+    .section {
+      background-color: #111827;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+  <script>
+    function openTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+
+      const allSubtabs = document.querySelectorAll('.subtab-content');
+      allSubtabs.forEach(subtab => subtab.classList.remove('active'));
+
+      const defaultSubtab = document.querySelector(`#${tabId} .subtab-content`);
+      if (defaultSubtab) defaultSubtab.classList.add('active');
+    }
+
+    function openSubTab(tabId, subtabId) {
+      const subtabs = document.querySelectorAll(`#${tabId} .subtab-content`);
+      subtabs.forEach(subtab => subtab.classList.remove('active'));
+      document.getElementById(`${tabId}-${subtabId}`).classList.add('active');
+    }
+  </script>
+</head>
+<script>
+  function openTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+
+    // Active le premier sous-onglet automatiquement
+    const subtabs = document.querySelectorAll(`#${tabId} .subtab-content`);
+    subtabs.forEach((sub, i) => sub.classList[i === 0 ? 'add' : 'remove']('active'));
+  }
+
+  function openSubTab(tabId, subtabId) {
+    document.querySelectorAll(`#${tabId} .subtab-content`).forEach(sub => sub.classList.remove('active'));
+    document.getElementById(`${tabId}-${subtabId}`).classList.add('active');
+  }
+</script>
+
+<body>
+
+  <header>    
+    <h1>Les Potos - 100% Foot Entre Amis</h1>
+  </header>
+
+  <div class="tabs">
+    <button onclick="openTab('psg')">🔴🔵 PSG</button>
+    <button onclick="openTab('ligue1')">🇫🇷 Ligue 1</button>
+    <button onclick="openTab('premier')">🏴 Premier League</button>
+    <button onclick="openTab('liga')">🇪🇸 Liga</button>
+  </div>
+
+  <!-- PSG Tab -->
+  <div id="psg" class="tab-content active">
+    <div class="subtabs">
+      <button onclick="openSubTab('psg', 'matchs')">Matchs à venir</button>
+      <button onclick="openSubTab('psg', 'actus')">Actus</button>
+    </div>
+    <div id="psg-matchs" class="subtab-content active section">
+      <p>25/04 : PSG vs Nice<br>
+         04/05 : Lyon vs PSG<br>
+         12/05 : PSG vs Strasbourg<br>
+         18/05 : Metz vs PSG<br>
+         07/05 : PSG vs Arsenal (Ligue des Champions)<br>
+         14/05 : PSG vs Marseille<br>
+         21/05 : PSG vs Lille<br>
+         28/05 : PSG vs Monaco<br>
+         04/06 : PSG vs Rennes</p>
+    </div>
+    <div id="psg-actus" class="subtab-content section">
+      <p>📰 PSG qualifié en demi-finale de LDC après un 5-4 cumulé face à Aston Villa.<br>
+         📰 Luis Enrique : "J’ai le meilleur effectif du monde".<br>
+         📰 PSG en passe de finir invaincu en Ligue 1.<br>
+         📰 Nouveau stade de 80 000 places prévu à Massy.<br>
+         📰 Mbappé reste silencieux sur son avenir.</p>
+    </div>
+  </div>
+
+  <!-- Ligue 1 Tab -->
+  <div id="ligue1" class="tab-content">
+    <div class="subtabs">
+      <button onclick="openSubTab('ligue1', 'matchs')">Matchs à venir</button>
+      <button onclick="openSubTab('ligue1', 'classement')">Classement</button>
+      <button onclick="openSubTab('ligue1', 'actus')">Actus</button>
+    </div>
+    <div id="ligue1-matchs" class="subtab-content active section">
+      <p>25/04 : Paris SG vs Nice<br>
+         26/04 : Strasbourg vs Saint-Étienne<br>
+         26/04 : Le Havre vs Monaco<br>
+         26/04 : Lyon vs Rennes<br>
+         27/04 : Angers vs Lille<br>
+         27/04 : Lens vs Auxerre<br>
+         27/04 : Nantes vs Toulouse<br>
+         27/04 : Montpellier vs Reims<br>
+         27/04 : Marseille vs Brest</p>
+    </div>
+    <div id="ligue1-classement" class="subtab-content section">
+      <p>1. Paris SG – 77 pts<br>2. Marseille – 55 pts<br>3. Monaco – 54 pts<br>4. Lille – 53 pts<br>5. Nice – 51 pts<br>6. Lyon – 51 pts<br>7. Strasbourg – 51 pts<br>8. Lens – 45 pts<br>9. Brest – 44 pts<br>10. Rennes – 38 pts</p>
+    </div>
+    <div id="ligue1-actus" class="subtab-content section">
+      <p>📰 La lutte pour la deuxième place s'intensifie entre Marseille et Monaco.<br>
+         📰 Lille enchaîne une série de victoires impressionnante.<br>
+         📰 Les équipes du bas de tableau se battent pour éviter la relégation.</p>
+    </div>
+  </div>
+
+  <!-- Premier League Tab -->
+  <!-- Premier League Tab -->
+<div id="premier" class="tab-content">
+  <div class="subtabs">
+    <button onclick="openSubTab('premier', 'matchs')">Matchs à venir</button>
+    <button onclick="openSubTab('premier', 'classement')">Classement</button>
+    <button onclick="openSubTab('premier', 'actus')">Actus</button>
+  </div>
+
+  <div id="premier-matchs" class="subtab-content active section">
+    <p>22/04 : Manchester City vs Aston Villa<br>
+       23/04 : Arsenal vs Crystal Palace<br>
+       26/04 : Chelsea vs Everton<br>
+       26/04 : Newcastle vs Ipswich<br>
+       26/04 : Southampton vs Fulham<br>
+       26/04 : Brighton vs West Ham<br>
+       26/04 : Wolverhampton vs Leicester<br>
+       27/04 : Bournemouth vs Manchester United<br>
+       27/04 : Liverpool vs Tottenham</p>
+  </div>
+  <div id="premier-classement" class="subtab-content section">
+    <p>
+      1. Liverpool – 33 MJ, 24V, 7N, 2D, 75 BP, 31 BC, +44, 79 pts<br>
+      2. Arsenal – 34 MJ, 18V, 13N, 3D, 63 BP, 29 BC, +34, 67 pts<br>
+      3. Manchester City – 34 MJ, 18V, 7N, 9D, 66 BP, 43 BC, +23, 61 pts<br>
+      4. Nottingham Forest – 33 MJ, 18V, 6N, 9D, 53 BP, 39 BC, +14, 60 pts<br>
+      5. Newcastle United – 33 MJ, 18V, 5N, 10D, 62 BP, 44 BC, +18, 59 pts<br>
+      6. Chelsea – 33 MJ, 16V, 9N, 8D, 58 BP, 40 BC, +18, 57 pts<br>
+      7. Aston Villa – 34 MJ, 16V, 9N, 9D, 54 BP, 49 BC, +5, 57 pts<br>
+      8. Bournemouth – 33 MJ, 13V, 10N, 10D, 52 BP, 40 BC, +12, 49 pts<br>
+      9. Fulham – 33 MJ, 13V, 9N, 11D, 48 BP, 45 BC, +3, 48 pts<br>
+      10. Brighton – 33 MJ, 12V, 12N, 9D, 53 BP, 53 BC, 0, 48 pts
+    </p>
+  </div>
+  <div id="premier-actus" class="subtab-content section">
+    <p>📰 Liverpool solide leader !<br>
+       📰 Arsenal accroche la 2e place.<br>
+       📰 La bataille pour les places européennes s’intensifie.</p>
+  </div>
+</div>
+<!-- Liga Tab -->
+<div id="liga" class="tab-content">
+  <div class="subtabs">
+    <button onclick="openSubTab('liga', 'matchs')">Matchs à venir</button>
+    <button onclick="openSubTab('liga', 'classement')">Classement</button>
+    <button onclick="openSubTab('liga', 'actus')">Actus</button>
+  </div>
+
+  <div id="liga-matchs" class="subtab-content active section">
+    <p>
+      02/05 : Rayo Vallecano vs Getafe – 21:00<br>
+      03/05 : Deportivo Alavés vs Atlético Madrid – 14:00<br>
+      03/05 : Villarreal vs Osasuna – 16:15<br>
+      03/05 : Las Palmas vs Valence – 18:30<br>
+      03/05 : Valladolid vs Barcelone – 21:00<br>
+      04/05 : Real Madrid vs Celta Vigo – 14:00<br>
+      04/05 : Séville vs Leganés – 16:15<br>
+      04/05 : Espanyol vs Betis – 18:30<br>
+      04/05 : Real Sociedad vs Ath. Bilbao – 21:00
+    </p>
+  </div>
+
+  <div id="liga-classement" class="subtab-content section">
+    <p>
+      1. Barcelone – 33 MJ, 24V, 4N, 5D, 89 BP, 32 BC, +57, 76 pts<br>
+      2. Real Madrid – 33 MJ, 22V, 6N, 5D, 66 BP, 31 BC, +35, 72 pts<br>
+      3. Atlético Madrid – 33 MJ, 19V, 9N, 5D, 56 BP, 27 BC, +29, 66 pts<br>
+      4. Ath. Bilbao – 33 MJ, 16V, 12N, 5D, 50 BP, 26 BC, +24, 60 pts<br>
+      5. Betis – 33 MJ, 15V, 9N, 9D, 50 BP, 41 BC, +9, 54 pts<br>
+      6. Villarreal – 32 MJ, 14V, 10N, 8D, 55 BP, 45 BC, +10, 52 pts<br>
+      7. Celta Vigo – 33 MJ, 13V, 7N, 13D, 50 BP, 49 BC, +1, 46 pts<br>
+      8. Osasuna – 33 MJ, 10V, 14N, 9D, 40 BP, 46 BC, -6, 44 pts<br>
+      9. Majorque – 33 MJ, 12V, 8N, 13D, 31 BP, 38 BC, -7, 44 pts<br>
+      10. Real Sociedad – 33 MJ, 12V, 6N, 15D, 32 BP, 37 BC, -5, 42 pts
+    </p>
+  </div>
+
+  <div id="liga-actus" class="subtab-content section">
+    <p>
+      📰 Barcelone solide en tête avant le choc contre Valladolid.<br>
+      📰 Duel basque entre la Real Sociedad et Bilbao pour l'Europe.<br>
+      📰 Madrid reste à l'affût avec un calendrier favorable.
+    </p>
+  </div>
+</div> 
