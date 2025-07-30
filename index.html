@@ -56,25 +56,20 @@
       margin-bottom: 20px;
     }
   </style>
-  <script>
-    function openTab(tabId) {
-      const tabs = document.querySelectorAll('.tab-content');
-      tabs.forEach(tab => tab.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
+<script>
+  function openTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
 
-      const allSubtabs = document.querySelectorAll('.subtab-content');
-      allSubtabs.forEach(subtab => subtab.classList.remove('active'));
+    const subtabs = document.querySelectorAll(`#${tabId} .subtab-content`);
+    subtabs.forEach((sub, i) => sub.classList[i === 0 ? 'add' : 'remove']('active'));
+  }
 
-      const defaultSubtab = document.querySelector(`#${tabId} .subtab-content`);
-      if (defaultSubtab) defaultSubtab.classList.add('active');
-    }
-
-    function openSubTab(tabId, subtabId) {
-      const subtabs = document.querySelectorAll(`#${tabId} .subtab-content`);
-      subtabs.forEach(subtab => subtab.classList.remove('active'));
-      document.getElementById(`${tabId}-${subtabId}`).classList.add('active');
-    }
-  </script>
+  function openSubTab(tabId, subtabId) {
+    document.querySelectorAll(`#${tabId} .subtab-content`).forEach(sub => sub.classList.remove('active'));
+    document.getElementById(`${tabId}-${subtabId}`).classList.add('active');
+  }
+</script>
 </head>
 <script>
   function openTab(tabId) {
