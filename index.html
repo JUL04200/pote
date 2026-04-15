@@ -1,613 +1,116 @@
-import { useEffect, useMemo, useState } from "react";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ruby Courbevoie</title>
 
-const menu = {
-  formuleMidi: {
-    title: "Formule déjeuner",
-    price: "21,50€",
-    hours: "Servie de 11h30 à 14h30",
-    desc: "Entrée + Plat ou Plat + Dessert",
-    entrees: [
-      "Mozzarella panée et frite, sauce crème de truffe d’été et champignons",
-      "Burrata, tagliatelles de courgettes et coulis de tomate",
-      "Assiette de charcuterie : mortadelle, jambon truffe, saucisson italien",
-      "Arancini : boulettes de riz frites, farcies à la viande de bœuf et mozzarella",
-      "Mozzarella in carrozza : pain de mie farcie de mozzarella, tomates séchées, basilic, panée et frite",
-      "Œuf mimosa au thon et mayonnaise",
-    ],
-    plats: [
-      "Linguine Nonna Nella, boulettes de bœuf, sauce tomate et parmesan",
-      "Tartare italien, frites et salades",
-      "Penne au saumon frais et fumé, courgettes et crème fraîche",
-      "Poulet flambé au vin rouge, champignons, lardons, olives, carottes, sauce tomate, accompagné de pâtes",
-      "Aubergine parmigiana, aubergines, sauce tomate, mozzarella, gratinée",
-      "Plat du jour",
-    ],
-    desserts: [
-      "Tiramisu au pistache",
-      "Mousse au chocolat",
-      "Café gourmand + 2,50€",
-      "Tiramisu au Marsala",
-      "Tarte au pistache et chocolat",
-    ],
-  },
-  produits: [
-    {
-      name: "Assortimento di salumi italiani",
-      desc: "Planche de charcuteries, jambon de Parme, pancetta, mortadelle, saucisson italien, jambon à la truffe d’été",
-      price: "18€",
-    },
-    {
-      name: "Assortimento di formaggi",
-      desc: "Planche de fromages : gorgonzola, scamorza fumée, burrata, taleggio, pecorino dop sarde",
-      price: "19€",
-    },
-    {
-      name: "Assortimento di salumi e formaggi",
-      desc: "Planche de charcuteries et fromages typiques italiens",
-      price: "25€",
-    },
-  ],
-  entrees: [
-    {
-      name: "L’antipasto di zio bruno à partager ou pas",
-      desc: "Assortiment de nos entrées, légumes grillés, pinsa au jambon de Parme, burrata, pancetta, olive ascolane",
-      price: "26€",
-    },
-    {
-      name: "Pinsa al prosciutto di Parma ou végétarienne",
-      desc: "Pâte à pizza romaine, sauce tomate, mozzarella, jambon de Parme, roquette et crème balsamique ou version légumes",
-      price: "9€",
-    },
-    {
-      name: "Mozzarella di bufala fritta, salsa al tartufo e funghi",
-      desc: "Mozzarella de bufflonne panée et frite, sauce crème de truffe d’été et champignons",
-      price: "11€",
-    },
-    {
-      name: "Burrata con pomodorini, pane crocante e rucola",
-      desc: "Burrata, tomates cerises, pane carasau et roquette",
-      price: "10€",
-    },
-    {
-      name: "Arancini e salsa al pomodoro",
-      desc: "Boulettes de riz farcies à la sauce bolognaise et mozzarella",
-      price: "9€",
-    },
-    {
-      name: "Uova mimosa al tonno",
-      desc: "Œuf mimosa au thon, mayonnaise et ciboulette",
-      price: "8€",
-    },
-    {
-      name: "Olive ascolane",
-      desc: "Olives farcies à la viande de porc, panées et frites, sauce au pesto",
-      price: "9€",
-    },
-  ],
-  salades: [
-    {
-      name: "Insalata italiana",
-      desc: "Jambon de Parme, aubergines, courgettes, poivrons grillés, mozzarella di bufala, salade, huile d’olive et pesto",
-      price: "18€",
-    },
-    {
-      name: "La Nostra césar salade",
-      desc: "Salade de saison, tomates cerises, croûtons, poulet pané, copeaux de parmesan, sauce césar",
-      price: "17€",
-    },
-    {
-      name: "Insalata sfiziosa",
-      desc: "Salade de saison, tomate, mozzarella di bufala, œuf dur, carottes, fenouil, concombre, vinaigrette",
-      price: "18€",
-    },
-  ],
-  plats: [
-    {
-      name: "Salmone al forno, porro pesto e parmigiano",
-      desc: "Saumon rôti, fondue de poireaux, pesto et sauce crémeuse au parmesan, légumes grillés",
-      price: "23€",
-    },
-    {
-      name: "Tartare all’italiana",
-      desc: "Haché de bœuf, tomates séchées, câpres, basilic, parmesan, moutarde, huile d’olive, et frites",
-      price: "19€",
-    },
-    {
-      name: "Vitello alla milanese",
-      desc: "Escalope de veau à la milanaise, accompagnée de pâtes crémeuses au pesto",
-      price: "22€",
-    },
-    {
-      name: "Costata di manzo alla plancha, salsa al tartufo, funghi e marsala",
-      desc: "Noix d’entrecôte argentine 300 gr, sauce crème de truffe d’été, champignons et marsala, frites",
-      price: "28€",
-    },
-    {
-      name: "Tartare al salmone e avocado",
-      desc: "Tartare de saumon, avocat, jus de citron et orange, légumes grillés",
-      price: "22€",
-    },
-    {
-      name: "Hamburger italiano",
-      desc: "Buns, steak haché, pancetta, oignons caramélisés, tomate, salades, scamorza fumé, sauce pesto, crème de stracciatella, servi avec frites",
-      price: "18€",
-    },
-    {
-      name: "Carpaccio di manzo e burrata",
-      desc: "Fines tranches de bœuf, sauce au citron et huile d’olive, 125 gr de burrata, roquette et copeaux de parmesan, frites",
-      price: "19€",
-    },
-  ],
-  pates: [
-    {
-      name: "Linguine della nonna nella",
-      desc: "Linguine, sauce tomate et petites boulettes typiques de la région d’Abruzzo",
-      price: "18€",
-    },
-    {
-      name: "Orecchiette alla crema di tartufo e funghi",
-      desc: "Orecchiette, crème de truffe d’été et champignons",
-      price: "18€",
-    },
-    {
-      name: "Linguine ai frutti di mare",
-      desc: "Linguine, sauce tomate, calamars, moules, crevettes, palourdes",
-      price: "20€",
-    },
-    {
-      name: "Penne alla carbonara",
-      desc: "Pennes, guanciale, jaune d’œuf, poivre noir, parmesan",
-      price: "19€",
-    },
-    {
-      name: "Culurgiones al pomodoro e crema al parmigiano",
-      desc: "Raviolis typique de la Sardaigne, farcis de pommes de terre, pecorino, menthe, sauce tomate au basilic et crème de parmesan",
-      price: "20€",
-    },
-  ],
-  fromagesDesserts: [
-    { name: "Assiette de fromages", desc: "Taleggio, scamorza, gorgonzola, pecorino", price: "12€" },
-    { name: "Café ou thé gourmand", desc: "Assortiment gourmand", price: "9€" },
-    { name: "Tarte aux pommes et glace caramel beurre salé", desc: "Dessert maison", price: "8€" },
-    { name: "Coupe amarena", desc: "Glace vanille et cerises amarena, chantilly", price: "8€" },
-    { name: "Semifreddo nougat et miel", desc: "Glace au nougat, miel, noisette, coulis de fruit rouge", price: "9€" },
-    { name: "Tiramisu classico au Marsala", desc: "Classique italien", price: "8€" },
-    { name: "Panna cotta et son coulis d’abricot", desc: "Dessert maison", price: "8€" },
-    {
-      name: "Assortiment de glaces ou sorbet – 3 boules au choix",
-      desc: "Café, chocolat, caramel beurre salé, fraise, vanille, stracciatella, sorbet citron",
-      price: "7€",
-    },
-  ],
-  happyHour: {
-    title: "Happy Hours",
-    hours: "À partir de 16H00 jusqu’à 20H00",
-    items: [
-      "Pinte de bières 6€",
-      "Verre de vin 6€",
-      "Cocktail 7€",
-      "Pinsa romaine",
-      "Planche de charcuteries",
-      "Tapas",
-    ],
-  },
-  boissons: {
-    softs: [
-      { name: "Santa Lucia naturelle", price: "4€ / 8€", desc: "50cl / 1L" },
-      { name: "Santa Lucia gazeuse", price: "4€ / 8€", desc: "50cl / 1L" },
-      { name: "Perrier 33cl", price: "4,50€", desc: "" },
-      { name: "Limonade 40cl", price: "4€", desc: "" },
-      { name: "Coca Cola / Zéro", price: "5€", desc: "" },
-      { name: "Schweppes tonic, FuzeTea 25cl", price: "5€", desc: "" },
-      { name: "Sprite, Fanta orange 33cl", price: "5€", desc: "" },
-      { name: "Bio : aranciata rouge Sicilia, limonade Sicilia 27cl", price: "5€", desc: "" },
-      { name: "Jus de fruit yoga 100% fruit 25cl", price: "5€", desc: "Orange, pomme, ananas, pêche, abricot, ace" },
-      { name: "Supp. sirop", price: "0,50€", desc: "" },
-    ],
-    cocktails: [
-      { name: "Spritz classico, Spritz al limoncello, Spritz St Germain", price: "9€", desc: "" },
-      { name: "Americano", price: "9€", desc: "" },
-      { name: "Negroni, Mojito", price: "9€", desc: "" },
-      { name: "Virgin Mojito fraise, Tuttifrutti", price: "8€", desc: "" },
-    ],
-    bieres: [
-      { name: "Peroni", price: "4€ / 8€", desc: "25cl / 50cl" },
-      { name: "Stefanus abbaye", price: "4,50€ / 9€", desc: "25cl / 50cl" },
-      { name: "Grolsch Blanche", price: "4€ / 8€", desc: "25cl / 50cl" },
-      { name: "IPA Harry", price: "4,50€ / 9€", desc: "25cl / 50cl" },
-    ],
-    aperitifs: [
-      { name: "Ricard 4cl", price: "4,50€", desc: "" },
-      { name: "Chivas 4cl", price: "10€", desc: "" },
-      { name: "Aberlour 4cl", price: "9€", desc: "" },
-      { name: "Vodka Absolut 4cl", price: "8€", desc: "" },
-      { name: "Gin 4cl", price: "8€", desc: "" },
-      { name: "Martini rouge ou blanc 6cl", price: "6€", desc: "" },
-      { name: "Campari, Aperol 6cl", price: "6€", desc: "" },
-      { name: "Kir, mûre, cassis 10cl", price: "5€", desc: "" },
-      { name: "Campari soda 10cl", price: "6€", desc: "" },
-      { name: "Bitter rosso sans alcool 10cl", price: "5€", desc: "" },
-      { name: "Spritz sans alcool 20cl", price: "5€", desc: "" },
-    ],
-    digestifs: [{ name: "Amaretto, Sambuca, Limoncello, Grappa 4cl", price: "6€", desc: "" }],
-    chaudes: [
-      { name: "Café / Déca", price: "2,50€", desc: "" },
-      { name: "Double expresso", price: "4,50€", desc: "" },
-      { name: "Café crème, Capuccino, Chocolat chaud", price: "4,50€", desc: "" },
-      { name: "Thé", price: "4,20€", desc: "" },
-    ],
-    vins: {
-      rouges: [
-        {
-          name: "Illuminati Riparosso Montepulciano (Abruzzo)",
-          price: "8€ / 18€ / 28€",
-          desc: "verre 15cl / pichet 50cl / bouteille 75cl",
-        },
-        { name: "Tratturi primitivo puglia (Pouilles)", price: "7€ / 16€ / 26€", desc: "verre / pichet / bouteille" },
-        { name: "Parpinello cannonau san constantino (Sardaegna)", price: "8€ / 18€ / 28€", desc: "verre / pichet / bouteille" },
-        { name: "Ruffino chianti (Toscana)", price: "8€ / 18€ / 28€", desc: "verre / pichet / bouteille" },
-        { name: "Valpolicella Ripasso doc Lamberti (Veneto)", price: "31€", desc: "bouteille" },
-        { name: "Barolo ca bianca (Piemonte)", price: "48€", desc: "bouteille" },
-        { name: "Tratturi primitivo puglia magnum 1.5 lt", price: "52€", desc: "magnum" },
-      ],
-      roses: [
-        { name: "Rosato Veneto rosatello igt (Veneto)", price: "7€ / 16€ / 26€", desc: "verre / pichet / bouteille" },
-        { name: "Cavit pinot grigio rosato (Trentin-Haut-Adige)", price: "8€ / 18€ / 28€", desc: "verre / pichet / bouteille" },
-      ],
-      blancs: [
-        { name: "Illuminati Pecorino controguerra (Abruzzo)", price: "8€ / 18€ / 28€", desc: "verre / pichet / bouteille" },
-        { name: "Pinot gris vaja venezie (Venezie)", price: "7€ / 14€ / 26€", desc: "verre / pichet / bouteille" },
-        { name: "Vermentino ala bianca (Sardegna)", price: "8€ / 18€ / 28€", desc: "verre / pichet / bouteille" },
-      ],
-      prosecco: [
-        { name: "Prosecco bio doc", price: "26€", desc: "bouteille 75cl" },
-        { name: "Prosecco Ponte", price: "7€ / 24€", desc: "verre 15cl / bouteille 75cl" },
-      ],
-    },
-  },
-};
-
-function SectionTitle({ eyebrow, title, text }) {
-  return (
-    <div className="max-w-2xl">
-      <p className="text-sm uppercase tracking-[0.25em] text-neutral-500">{eyebrow}</p>
-      <h2 className="mt-2 text-3xl font-semibold text-neutral-900 md:text-4xl">{title}</h2>
-      {text ? <p className="mt-4 text-base leading-7 text-neutral-600">{text}</p> : null}
-    </div>
-  );
-}
-
-function MenuCard({ item }) {
-  return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-lg font-medium text-neutral-900">{item.name}</h3>
-          {item.desc ? <p className="mt-2 text-sm leading-6 text-neutral-600">{item.desc}</p> : null}
-        </div>
-        <div className="whitespace-nowrap text-base font-semibold text-neutral-900">{item.price}</div>
-      </div>
-    </div>
-  );
-}
-
-function SimpleListCard({ title, items, dark = false }) {
-  return (
-    <div className={`rounded-[28px] border p-6 shadow-sm ${dark ? "border-white/10 bg-white/5 text-white" : "border-neutral-200 bg-white"}`}>
-      <h3 className={`text-xl font-semibold ${dark ? "text-white" : "text-neutral-900"}`}>{title}</h3>
-      <ul className={`mt-4 space-y-3 text-sm leading-6 ${dark ? "text-white/80" : "text-neutral-700"}`}>
-        {items.map((item) => (
-          <li key={item} className="flex gap-3">
-            <span className={`mt-2 h-1.5 w-1.5 rounded-full ${dark ? "bg-white" : "bg-neutral-900"}`} />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function MenuSection({ title, items, columns = 3 }) {
-  return (
-    <div>
-      <h3 className="mb-5 text-2xl font-semibold text-neutral-900">{title}</h3>
-      <div className={`grid gap-4 ${columns === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}>
-        {items.map((item) => (
-          <MenuCard key={`${title}-${item.name}`} item={item} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ReservationForm({ form, onChange, smsHref, phoneNumber }) {
-  return (
-    <form className="mt-8 rounded-[28px] bg-white p-6 shadow-sm" onSubmit={(e) => e.preventDefault()}>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="nom" className="mb-2 block text-sm font-medium text-neutral-700">
-            Nom
-          </label>
-          <input
-            id="nom"
-            name="nom"
-            value={form.nom}
-            onChange={onChange}
-            className="w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-            placeholder="Votre nom"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="telephone" className="mb-2 block text-sm font-medium text-neutral-700">
-            Téléphone
-          </label>
-          <input
-            id="telephone"
-            name="telephone"
-            value={form.telephone}
-            onChange={onChange}
-            className="w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-            placeholder="06..."
-          />
-        </div>
-
-        <div>
-          <label htmlFor="date" className="mb-2 block text-sm font-medium text-neutral-700">
-            Date
-          </label>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            value={form.date}
-            onChange={onChange}
-            className="w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="heure" className="mb-2 block text-sm font-medium text-neutral-700">
-            Heure
-          </label>
-          <input
-            id="heure"
-            name="heure"
-            type="time"
-            value={form.heure}
-            onChange={onChange}
-            className="w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-          />
-        </div>
-
-        <div className="sm:col-span-2">
-          <label htmlFor="personnes" className="mb-2 block text-sm font-medium text-neutral-700">
-            Nombre de personnes
-          </label>
-          <input
-            id="personnes"
-            name="personnes"
-            value={form.personnes}
-            onChange={onChange}
-            className="w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-            placeholder="2"
-          />
-        </div>
-
-        <div className="sm:col-span-2">
-          <label htmlFor="message" className="mb-2 block text-sm font-medium text-neutral-700">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            value={form.message}
-            onChange={onChange}
-            className="min-h-[120px] w-full rounded-2xl border border-neutral-200 px-4 py-3 outline-none"
-            placeholder="Précisions éventuelles"
-          />
-        </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap gap-3">
-        <a href={smsHref} className="rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-medium text-white">
-          Confirmer réservation
-        </a>
-
-        <button
-          type="button"
-          onClick={() => {
-            window.open(`tel:${phoneNumber}`, "_self");
-          }}
-          onTouchEnd={() => {
-            window.open(`tel:${phoneNumber}`, "_self");
-          }}
-          className="cursor-pointer rounded-2xl border border-neutral-900 px-6 py-3 text-sm font-medium text-neutral-900 transition active:scale-[0.98]"
-        >
-          Appeler pour réserver
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function PracticalInfo() {
-  return (
-    <div className="space-y-5">
-      <div className="rounded-[28px] bg-white p-6 shadow-sm">
-        <h3 className="text-xl font-semibold">Informations pratiques</h3>
-        <div className="mt-5 space-y-3 text-neutral-700">
-          <p><span className="font-medium text-neutral-900">Adresse :</span> 5 Rue de l’Abreuvoir, 92400 Courbevoie</p>
-          <p><span className="font-medium text-neutral-900">Téléphone :</span> 01 40 99 96 54</p>
-          <p><span className="font-medium text-neutral-900">Service midi :</span> jusqu’à 14h30</p>
-          <p><span className="font-medium text-neutral-900">Happy hour :</span> 16h00 – 20h00</p>
-          <p><span className="font-medium text-neutral-900">Jours d’ouverture :</span> lundi à vendredi</p>
-          <p><span className="font-medium text-neutral-900">Horaires :</span> 8h00 – 22h00</p>
-        </div>
-      </div>
-
-      <div className="rounded-[28px] bg-white p-2 shadow-sm">
-        <div className="h-80 rounded-[22px] bg-[url('https://images.unsplash.com/photo-1525610553991-2bede1a236e2?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center" />
-      </div>
-    </div>
-  );
-}
-
-export default function DaBrunoSite() {
-  const [showFullMenu, setShowFullMenu] = useState(false);
-  const [form, setForm] = useState({
-    nom: "",
-    telephone: "",
-    date: "",
-    heure: "",
-    personnes: "",
-    message: "",
-  });
-
-  const phoneNumber = "+33661667695";
-
-  useEffect(() => {
-    if (showFullMenu) {
-      const el = document.getElementById("carte");
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #1f5c35;
+      color: white;
     }
-  }, [showFullMenu]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px;
+    }
 
-  const smsHref = useMemo(() => {
-    const smsBody = encodeURIComponent(
-      `Bonjour, je souhaite réserver une table chez Da Bruno.\n\nNom : ${form.nom}\nTéléphone : ${form.telephone}\nDate : ${form.date}\nHeure : ${form.heure}\nNombre de personnes : ${form.personnes}\nMessage : ${form.message}`
-    );
+    h1 {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
 
-    return `sms:${phoneNumber}?&body=${smsBody}`;
-  }, [form, phoneNumber]);
+    .card {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 20px;
+      margin-top: 30px;
+    }
 
-  return (
-    <div className="min-h-screen bg-[#f8f5f0] text-neutral-900">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f3ede3] via-[#faf8f3] to-[#efe6d8]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-          <div className="grid items-center gap-12 md:grid-cols-2">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-neutral-500">Restaurant italien • Courbevoie</p>
-              <h1 className="mt-4 text-5xl font-semibold leading-tight md:text-7xl">Da Bruno</h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-700">
-                Une brasserie italienne chaleureuse avec une belle carte complète et une réservation simple.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="#reservation"
-                  className="rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:-translate-y-0.5"
-                >
-                  Réserver une table
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setShowFullMenu((prev) => !prev)}
-                  className="rounded-2xl border border-neutral-300 bg-white px-6 py-3 text-sm font-medium text-neutral-900 transition hover:bg-neutral-50"
-                >
-                  {showFullMenu ? "Masquer la carte complète" : "Voir la carte complète"}
-                </button>
-              </div>
-            </div>
+    button {
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 10px 0 0;
+    }
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[28px] bg-white p-4 shadow-lg">
-                <div className="h-72 rounded-[20px] bg-[url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center" />
-              </div>
-              <div className="space-y-4 pt-8">
-                <div className="rounded-[28px] bg-white p-4 shadow-lg">
-                  <div className="h-40 rounded-[20px] bg-[url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center" />
-                </div>
-                <div className="rounded-[28px] bg-white p-6 shadow-lg">
-                  <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">Adresse</p>
-                  <p className="mt-3 text-lg font-medium">5 Rue de l’Abreuvoir</p>
-                  <p className="text-neutral-600">92400 Courbevoie</p>
-                  <p className="mt-4 text-sm text-neutral-500">Ouvert du lundi au vendredi • 8h00 – 22h00</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    .btn-main {
+      background: black;
+      color: white;
+    }
 
-      <section id="reservation" className="mx-auto max-w-7xl px-6 py-20 md:px-10">
-        <div className="grid gap-10 md:grid-cols-2">
-          <div>
-            <SectionTitle eyebrow="Réservation" title="Réserver en quelques secondes" />
-            <ReservationForm form={form} onChange={handleChange} smsHref={smsHref} phoneNumber={phoneNumber} />
-          </div>
+    .btn-outline {
+      border: 2px solid black;
+      background: white;
+    }
 
-          <PracticalInfo />
-        </div>
-      </section>
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
 
-      {showFullMenu ? (
-        <section id="carte" className="mx-auto max-w-7xl px-6 pb-20 md:px-10">
-          <SectionTitle
-            eyebrow="La carte complète"
-            title="Toute la carte du restaurant"
-            text="Retrouvez ici la formule déjeuner, le happy hour, les plats, les boissons et toute la carte du restaurant."
-          />
+<body>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="rounded-[28px] bg-neutral-900 p-8 text-white shadow-sm">
-              <p className="text-sm uppercase tracking-[0.25em] text-white/60">Le midi</p>
-              <h3 className="mt-3 text-3xl font-semibold">Formule déjeuner à 21,50€</h3>
-              <p className="mt-3 text-base leading-7 text-white/75">Entrée + Plat ou Plat + Dessert</p>
-              <div className="mt-5 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-medium">
-                Fin du midi : 14h30
-              </div>
-              <div className="mt-6 grid gap-4">
-                <SimpleListCard title="Entrées" items={menu.formuleMidi.entrees} dark />
-                <SimpleListCard title="Plats" items={menu.formuleMidi.plats} dark />
-                <SimpleListCard title="Desserts" items={menu.formuleMidi.desserts} dark />
-              </div>
-            </div>
+<div class="container">
 
-            <div className="rounded-[28px] bg-[#c47b32] p-8 text-white shadow-sm">
-              <p className="text-sm uppercase tracking-[0.25em] text-white/70">Happy hour</p>
-              <h3 className="mt-3 text-3xl font-semibold">De 16h00 à 20h00</h3>
-              <div className="mt-6 grid gap-3 text-base">
-                {menu.happyHour.items.map((item) => (
-                  <div key={item} className="rounded-2xl bg-white/10 px-4 py-3">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+  <h1>RUBY</h1>
+  <p>Bistro de famille – Courbevoie</p>
 
-          <div className="mt-12 space-y-14">
-            <MenuSection title="Nos produits typiques italiens" items={menu.produits} />
-            <MenuSection title="Nos entrées" items={menu.entrees} />
-            <MenuSection title="Nos salades" items={menu.salades} />
-            <MenuSection title="Nos plats" items={menu.plats} />
-            <MenuSection title="Nos pâtes" items={menu.pates} />
-            <MenuSection title="Fromages et desserts" items={menu.fromagesDesserts} />
+  <!-- 🔥 BOUTONS -->
+  <button class="btn-main"
+    onclick="window.location.href='https://www.thefork.fr/restaurant/ruby-r842502'">
+    Réserver sur TheFork
+  </button>
 
-            <div>
-              <h3 className="mb-5 text-2xl font-semibold text-neutral-900">Boissons</h3>
-              <div className="space-y-10">
-                <MenuSection title="Eaux, softs et jus de fruit" items={menu.boissons.softs} columns={2} />
-                <MenuSection title="Cocktails" items={menu.boissons.cocktails} columns={2} />
-                <MenuSection title="Bières pression" items={menu.boissons.bieres} columns={2} />
-                <MenuSection title="Apéritifs" items={menu.boissons.aperitifs} columns={2} />
-                <MenuSection title="Digestifs" items={menu.boissons.digestifs} columns={2} />
-                <MenuSection title="Boissons chaudes" items={menu.boissons.chaudes} columns={2} />
-                <MenuSection title="Vins rouges" items={menu.boissons.vins.rouges} columns={2} />
-                <MenuSection title="Vins rosés" items={menu.boissons.vins.roses} columns={2} />
-                <MenuSection title="Vins blancs" items={menu.boissons.vins.blancs} columns={2} />
-                <MenuSection title="Prosecco" items={menu.boissons.vins.prosecco} columns={2} />
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-    </div>
-  );
+  <button class="btn-outline"
+    onclick="window.location.href='tel:+33140970205'">
+    Appeler le restaurant
+  </button>
+
+  <!-- 🔥 RÉSERVATION -->
+  <div class="card">
+    <h2>Réserver en quelques secondes</h2>
+
+    <input id="nom" placeholder="Nom">
+    <input id="tel" placeholder="Téléphone">
+    <input id="date" type="date">
+    <input id="heure" type="time">
+    <input id="pers" placeholder="Nombre de personnes">
+    <textarea id="msg" placeholder="Message"></textarea>
+
+    <button class="btn-main" onclick="envoyerSMS()">
+      Confirmer réservation
+    </button>
+  </div>
+
+</div>
+
+<script>
+function envoyerSMS() {
+  let message =
+    "Bonjour, je souhaite réserver une table chez Ruby.%0A%0A" +
+    "Nom : " + document.getElementById("nom").value + "%0A" +
+    "Téléphone : " + document.getElementById("tel").value + "%0A" +
+    "Date : " + document.getElementById("date").value + "%0A" +
+    "Heure : " + document.getElementById("heure").value + "%0A" +
+    "Personnes : " + document.getElementById("pers").value + "%0A" +
+    "Message : " + document.getElementById("msg").value;
+
+  window.location.href = "sms:0661667695?body=" + message;
 }
+</script>
+
+</body>
+</html>
